@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1c2d3e">
+<title>ProffittGoodson - Your Team, Connected</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; font-family: 'Jost', sans-serif;
+    background: #1c2d3e; color: #f5f0e8;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; background: #1c2d3e; border-bottom: 1px solid #243d52;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .badge { width: 32px; height: 32px; background: #c9981a; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 10px; color: #1c2d3e; }
+  .firm-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: #f5f0e8; }
+  .video-pill { font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #c9981a; border: 1px solid #c9981a; padding: 5px 11px; border-radius: 20px; }
+
+  .intro { padding: 88px 24px 24px; opacity: 0; animation: fadeUp 0.5s ease 0.1s forwards; }
+  .eyebrow { font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #c9981a; margin-bottom: 12px; }
+  .headline { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 400; line-height: 1.15; color: #f5f0e8; margin-bottom: 14px; }
+  .headline em { font-style: italic; color: #e0aa20; }
+  .subhead { font-size: 15px; font-weight: 300; line-height: 1.7; color: #d8d0c4; }
+
+  .video-wrap { padding: 20px; opacity: 0; animation: fadeUp 0.5s ease 0.2s forwards; }
+  .video-container {
+    position: relative; width: 100%; aspect-ratio: 9/16; max-height: 68vh;
+    margin: 0 auto; max-width: 340px; border-radius: 14px; overflow: hidden;
+    background: #1e3347; border: 1px solid #2e4d68; box-shadow: 0 20px 56px rgba(0,0,0,0.55);
+  }
+  .video-inner {
+    width: 100%; height: 100%;
+    background: linear-gradient(160deg, #0d1e2e 0%, #193048 55%, #0a1824 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  }
+  .play-ring { width: 68px; height: 68px; border-radius: 50%; border: 1.5px solid #c9981a; background: rgba(184,146,42,0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .play-ring:active { background: rgba(184,146,42,0.28); transform: scale(0.96); }
+  .play-ring svg { margin-left: 4px; }
+  .video-label { font-size: 11px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: #c9981a; }
+  .video-dur { font-size: 11px; color: #8aacbf; }
+  .video-num { position: absolute; top: 14px; left: 14px; background: #c9981a; color: #1c2d3e; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; }
+
+  .section { margin: 0 20px 20px; opacity: 0; animation: fadeUp 0.5s ease 0.35s forwards; }
+  .section.d2 { animation-delay: 0.42s; }
+  .section.d3 { animation-delay: 0.5s; }
+  .section.d4 { animation-delay: 0.58s; }
+  .section-label { font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #c9981a; margin-bottom: 14px; }
+
+  /* BEFORE / AFTER DIAGRAM */
+  .ba-wrap { display: flex; flex-direction: column; gap: 16px; }
+  .ba-panel { background: #243d52; border: 1px solid #2e4d68; border-radius: 12px; overflow: hidden; }
+  .ba-header { padding: 12px 16px; border-bottom: 1px solid #2e4d68; display: flex; align-items: center; gap: 10px; }
+  .ba-tag { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; }
+  .ba-tag.before { background: rgba(90,122,148,0.25); color: #8aacbf; }
+  .ba-tag.after { background: rgba(184,146,42,0.2); color: #e0aa20; }
+  .ba-header-text { font-size: 12px; font-weight: 500; color: #f5f0e8; }
+
+  /* FRAGMENTED MAP */
+  .frag-map { padding: 18px 16px; }
+  .frag-nodes { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .frag-node { background: #1e3347; border: 1px solid #2e4d68; border-radius: 8px; padding: 10px 8px; text-align: center; }
+  .frag-node-title { font-size: 10px; font-weight: 500; color: #d8d0c4; line-height: 1.3; }
+  .frag-node-sub { font-size: 9px; color: #8aacbf; margin-top: 3px; }
+  .frag-lines { position: relative; height: 28px; }
+  .frag-lines svg { width: 100%; height: 100%; }
+  .frag-family { background: #1e3347; border: 1px dashed #3a5068; border-radius: 8px; padding: 10px; text-align: center; }
+  .frag-family-text { font-size: 11px; color: #8aacbf; }
+  .frag-caption { font-size: 11px; color: #8aacbf; text-align: center; margin-top: 12px; line-height: 1.5; }
+
+  /* COORDINATED MAP */
+  .coord-map { padding: 18px 16px; }
+  .coord-outer { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .coord-col { display: flex; flex-direction: column; gap: 8px; }
+  .coord-node { background: #1e3347; border: 1px solid #2e4d68; border-radius: 8px; padding: 10px 8px; text-align: center; }
+  .coord-node-title { font-size: 10px; font-weight: 500; color: #f5f0e8; line-height: 1.3; }
+  .coord-node-sub { font-size: 9px; color: #8aacbf; margin-top: 3px; }
+  .coord-center { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .coord-hub { width: 58px; height: 58px; background: #c9981a; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
+  .coord-hub-letters { font-weight: 700; font-size: 16px; color: #1c2d3e; }
+  .coord-hub-sub { font-size: 7px; color: #1c2d3e; opacity: 0.7; letter-spacing: 1px; text-transform: uppercase; }
+  .coord-arrow { font-size: 14px; color: #c9981a; }
+  .coord-family { background: rgba(184,146,42,0.1); border: 1px solid #c9981a; border-radius: 8px; padding: 10px; text-align: center; }
+  .coord-family-text { font-size: 11px; color: #e0aa20; font-weight: 500; }
+  .coord-caption { font-size: 11px; color: #8aacbf; text-align: center; margin-top: 12px; line-height: 1.5; }
+
+  /* GAIN/LOSE BARS */
+  .gainlose { background: #243d52; border: 1px solid #2e4d68; border-radius: 12px; overflow: hidden; }
+  .gainlose-header { background: #1e3347; padding: 12px 18px; border-bottom: 1px solid #2e4d68; font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #c9981a; }
+  .gl-row { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid #2e4d68; }
+  .gl-row:last-child { border-bottom: none; }
+  .gl-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; }
+  .gl-icon.gain { background: rgba(184,146,42,0.15); }
+  .gl-icon.keep { background: rgba(90,122,148,0.2); }
+  .gl-text {}
+  .gl-title { font-size: 13px; font-weight: 500; color: #f5f0e8; margin-bottom: 3px; }
+  .gl-sub { font-size: 12px; font-weight: 300; color: #d8d0c4; line-height: 1.5; }
+
+  /* PULL */
+  .pull {
+    margin: 0 20px 20px; padding: 22px 20px 22px 24px;
+    background: #1e3347; border-left: 3px solid #c9981a;
+    border-top: 1px solid #2e4d68; border-right: 1px solid #2e4d68; border-bottom: 1px solid #2e4d68;
+    border-radius: 0 10px 10px 0;
+    opacity: 0; animation: fadeUp 0.5s ease 0.58s forwards;
+  }
+  .pull p { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; line-height: 1.45; color: #e0aa20; }
+
+  .cta-section { padding: 8px 20px 50px; opacity: 0; animation: fadeUp 0.5s ease 0.65s forwards; }
+  .cta-primary { display: block; width: 100%; background: #c9981a; color: #1c2d3e; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; text-align: center; text-decoration: none; padding: 18px; border-radius: 8px; border: none; cursor: pointer; margin-bottom: 12px; -webkit-tap-highlight-color: transparent; }
+  .cta-primary:active { opacity: 0.85; transform: scale(0.98); }
+  .cta-secondary { display: block; width: 100%; background: transparent; color: #d8d0c4; font-size: 12px; letter-spacing: 1px; text-align: center; text-decoration: none; padding: 14px; border-radius: 8px; border: 1px solid #2e4d68; -webkit-tap-highlight-color: transparent; }
+  .cta-note { text-align: center; font-size: 11px; color: #8aacbf; margin-top: 14px; line-height: 1.7; }
+
+  .page-footer { padding: 18px 20px; border-top: 1px solid #243d52; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .footer-badge { width: 22px; height: 22px; background: #c9981a; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 7px; color: #1c2d3e; }
+  .footer-name { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: #8aacbf; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* PG Brand burgundy accent */
+    .eyebrow { color: #c9981a !important; }
+    .section-label { color: #c9981a !important; }
+    .topbar { background: #1c2d3e !important; border-bottom: 2px solid #c9981a !important; }
+    .badge { background: #c9981a !important; }
+    .video-pill { color: #c9981a !important; border-color: #c9981a !important; }
+    .play-ring { border-color: #c9981a !important; }
+    .video-num { background: #7a2828 !important; color: #fff !important; }
+    .card-label, .gainlose-header, .risk-header, .drift-header-title,
+    .timeline-header-title, .expect-section-label, .changes-label,
+    .costs-label, .timeline-label, .window-header, .ba-tag.after,
+    .compare-header.right .compare-header-label { color: #c9981a !important; }
+    .ba-tag.after { background: rgba(201,152,26,0.2) !important; }
+    .card { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .context-card { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .expect-section { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .expect-section-label { background: #1e3347 !important; border-color: #2e4d68 !important; color: #c9981a !important; }
+    .gainlose { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .gainlose-header { background: #1e3347 !important; color: #c9981a !important; }
+    .risk-card { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .risk-header { background: #1e3347 !important; color: #c9981a !important; }
+    .drift-card { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .drift-header { background: #1e3347 !important; border-color: #2e4d68 !important; }
+    .window-card { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .window-header { background: #1e3347 !important; color: #c9981a !important; }
+    .timeline-card { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .timeline-header { background: #1e3347 !important; border-color: #2e4d68 !important; }
+    .tl-item.active .tl-day { background: #7a2828 !important; border-right-color: #7a2828 !important; }
+    .tl-item.active .tl-title { color: #e0aa20 !important; }
+    .pull { background: #1e3347 !important; border-left-color: #7a2828 !important; border-color: #2e4d68 !important; border-left: 3px solid #7a2828 !important; }
+    .pull p { color: #e0aa20 !important; }
+    .clarity { background: #7a2828 !important; }
+    .clarity p { color: #fff !important; }
+    .cta-primary { background: #c9981a !important; color: #1c2d3e !important; }
+    .cta-secondary { border-color: #2e4d68 !important; color: #d8d0c4 !important; }
+    .page-footer { border-top-color: #2e4d68 !important; }
+    .footer-badge { background: #c9981a !important; color: #1c2d3e !important; }
+    .ba-panel { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .ba-header { background: #1e3347 !important; border-color: #2e4d68 !important; }
+    .frag-node, .coord-node, .chip { background: #1e3347 !important; border-color: #2e4d68 !important; }
+    .coord-hub { background: #c9981a !important; }
+    .coord-hub-letters { color: #1c2d3e !important; }
+    .coord-family { background: rgba(201,152,26,0.1) !important; border-color: #c9981a !important; }
+    .coord-family-text { color: #e0aa20 !important; }
+    .gl-icon.gain { background: rgba(201,152,26,0.15) !important; }
+    .risk-bar-fill.high { background: #7a2828 !important; }
+    .risk-bar-fill.med { background: #c9981a !important; }
+    .risk-bar-track { background: #1e3347 !important; }
+    .risk-level.high { color: #e0aa20 !important; }
+    .risk-level.med { color: #8aacbf !important; }
+    .window-stage.now { background: rgba(201,152,26,0.1) !important; }
+    .window-stage.now .w-label { color: #c9981a !important; }
+    .now-marker { background: #7a2828 !important; color: #fff !important; }
+    .compare-grid { border-color: #2e4d68 !important; }
+    .compare-col { background: #243d52 !important; }
+    .compare-col.right { background: #1e3347 !important; }
+    .compare-header { border-color: #2e4d68 !important; }
+    .compare-item { border-color: #2e4d68 !important; }
+    .sit-chip { background: #243d52 !important; border-color: #2e4d68 !important; }
+    .expect-icon { background: rgba(201,152,26,0.15) !important; border-color: #c9981a !important; }
+    .expect-icon span { color: #e0aa20 !important; }
+    .change-dot { background: #c9981a !important; }
+    .t-item.warn .t-dot { border-color: #c9981a !important; background: rgba(201,152,26,0.2) !important; }
+    .t-item.danger .t-dot { background: #7a2828 !important; border-color: #7a2828 !important; }
+    .t-item.warn .t-title { color: #e0aa20 !important; }
+    .t-item.danger .t-title { color: #e0aa20 !important; }
+    .coord-arrow { color: #c9981a !important; }
+    .legend-dot[style*="3a5068"] { background: #8aacbf !important; }
+    .legend-dot[style*="b8922a"] { background: #c9981a !important; }
+    .frag-family { background: #1e3347 !important; border-color: #2e4d68 !important; border-style: dashed !important; }
+    .pg-hub { background: #c9981a !important; }
+    .pg-hub-letters { color: #1c2d3e !important; }
+
+
+  /* ── MOBILE READABILITY OVERRIDES ── */
+
+  /* Center align everything */
+  body { text-align: center; }
+
+  .intro, .section, .context-card, .card,
+  .expect-section, .pull, .cta-section,
+  .page-footer, .diagram, .changes,
+  .costs, .clarity, .timeline, .ba-wrap,
+  .gainlose, .risk-card, .window-card,
+  .drift-card { text-align: center; }
+
+  /* Keep list items and structured content left-aligned */
+  .expect-item, .change-row, .gl-row,
+  .risk-row, .t-item, .tl-item,
+  .compare-item, .sit-chip,
+  .diagram-note, .coord-caption,
+  .frag-caption, .drift-header-sub,
+  .timeline-header-sub { text-align: left; }
+
+  /* Section labels */
+  .section-label {
+    font-size: 11px !important;
+    letter-spacing: 4px !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Main headline, bigger and bolder presence */
+  .headline {
+    font-size: 42px !important;
+    line-height: 1.1 !important;
+    margin-bottom: 18px !important;
+  }
+
+  /* Subhead below headline */
+  .subhead {
+    font-size: 17px !important;
+    line-height: 1.75 !important;
+    max-width: 380px !important;
+    margin: 0 auto !important;
+  }
+
+  /* Card labels */
+  .card-label, .gainlose-header, .risk-header,
+  .drift-header-title, .timeline-header-title,
+  .expect-section-label, .changes-label,
+  .costs-label, .timeline-label, .window-header,
+  .drift-header-sub, .timeline-header-sub {
+    font-size: 11px !important;
+    letter-spacing: 3px !important;
+  }
+
+  /* Card body text */
+  .card-body { font-size: 17px !important; line-height: 1.8 !important; }
+
+  /* Expect titles and descriptions */
+  .expect-title { font-size: 17px !important; margin-bottom: 6px !important; }
+  .expect-desc  { font-size: 15px !important; line-height: 1.7 !important; }
+
+  /* Change rows */
+  .change-title { font-size: 16px !important; }
+  .change-desc  { font-size: 14px !important; line-height: 1.7 !important; }
+
+  /* Timeline */
+  .tl-title { font-size: 15px !important; }
+  .tl-desc  { font-size: 13px !important; line-height: 1.65 !important; }
+  .tl-day-num { font-size: 30px !important; }
+
+  /* Pull quote */
+  .pull p { font-size: 22px !important; line-height: 1.45 !important; }
+  .pull-sub { font-size: 15px !important; }
+
+  /* Cost items */
+  .cost-item { font-size: 16px !important; line-height: 1.7 !important; }
+
+  /* Clarity bar */
+  .clarity p { font-size: 21px !important; }
+
+  /* CTA */
+  .cta-primary   { font-size: 14px !important; padding: 20px 24px !important; border-radius: 10px !important; }
+  .cta-secondary { font-size: 14px !important; padding: 16px 24px !important; }
+  .cta-note      { font-size: 13px !important; line-height: 1.75 !important; }
+
+  /* Diagram labels */
+  .diagram-label, .diagram-note, .coord-caption, .frag-caption { font-size: 13px !important; }
+  .chip-title, .coord-node-title, .frag-node-title { font-size: 13px !important; }
+  .chip-sub, .coord-node-sub, .frag-node-sub { font-size: 11px !important; }
+
+  /* Risk bars */
+  .risk-label { font-size: 14px !important; }
+  .risk-desc  { font-size: 13px !important; line-height: 1.6 !important; }
+  .risk-level { font-size: 12px !important; }
+
+  /* Timeline (drift) */
+  .t-title { font-size: 15px !important; }
+  .t-desc  { font-size: 13px !important; line-height: 1.65 !important; }
+
+  /* Window stages */
+  .w-text  { font-size: 12px !important; }
+  .w-label { font-size: 10px !important; }
+
+  /* Gain/lose */
+  .gl-title { font-size: 15px !important; }
+  .gl-sub   { font-size: 14px !important; line-height: 1.65 !important; }
+
+  /* Compare grid */
+  .compare-item { font-size: 14px !important; }
+  .compare-header-label { font-size: 10px !important; }
+
+  /* Situation chips */
+  .sit-title { font-size: 13px !important; }
+
+  /* Eyebrow */
+  .eyebrow { font-size: 11px !important; letter-spacing: 4px !important; margin-bottom: 14px !important; }
+
+  /* Footer */
+  .footer-name { font-size: 15px !important; }
+
+  /* Topbar firm name */
+  .firm-name { font-size: 18px !important; }
+
+  /* Video pill */
+  .video-pill { font-size: 10px !important; }
+
+  /* Video labels */
+  .video-label { font-size: 13px !important; letter-spacing: 3px !important; }
+  .video-dur   { font-size: 13px !important; }
+
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="logo"><div class="badge">PG</div><span class="firm-name">ProffittGoodson</span></div>
+  <span class="video-pill">Video 02 of 03</span>
+</nav>
+
+<div class="intro">
+  <p class="eyebrow">Your Team, Connected</p>
+  <h1 class="headline">How we work alongside<br>your <em>CPA and attorney</em></h1>
+  <p class="subhead">The relationships you have built are not the problem. Here is what changes when someone is responsible for connecting them.</p>
+</div>
+
+<script src="https://fast.wistia.com/player.js" async></script>
+<script src="https://fast.wistia.com/embed/owvi8pn5u4.js" async type="module"></script>
+<style>wistia-player[media-id='owvi8pn5u4']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/owvi8pn5u4/swatch'); display: block; filter: blur(5px); padding-top:177.78%; }</style>
+<div class="video-wrap">
+  <div class="video-container">
+    <wistia-player media-id="owvi8pn5u4" aspect="0.5625"></wistia-player>
+  </div>
+</div>
+
+<!-- BEFORE / AFTER -->
+<div class="section">
+  <p class="section-label">The difference coordination makes</p>
+  <div class="ba-wrap">
+
+    <div class="ba-panel">
+      <div class="ba-header">
+        <span class="ba-tag before">Before</span>
+        <span class="ba-header-text">Fragmented structure</span>
+      </div>
+      <div class="frag-map">
+        <div class="frag-nodes">
+          <div class="frag-node">
+            <div class="frag-node-title">CPA</div>
+            <div class="frag-node-sub">Tax strategy</div>
+          </div>
+          <div class="frag-node">
+            <div class="frag-node-title">Attorney</div>
+            <div class="frag-node-sub">Estate plan</div>
+          </div>
+          <div class="frag-node">
+            <div class="frag-node-title">Investments</div>
+            <div class="frag-node-sub">Portfolio</div>
+          </div>
+        </div>
+        <!-- SVG showing disconnected lines -->
+        <svg viewBox="0 0 300 30" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:30px;margin-bottom:10px;">
+          <line x1="50" y1="4" x2="50" y2="26" stroke="#3a5068" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="150" y1="4" x2="150" y2="26" stroke="#3a5068" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="250" y1="4" x2="250" y2="26" stroke="#3a5068" stroke-width="1" stroke-dasharray="3,3"/>
+        </svg>
+        <div class="frag-family">
+          <div class="frag-family-text">Your family, receiving separate, unconnected advice</div>
+        </div>
+        <p class="frag-caption">Each advisor does their job well. Nobody sees the full picture.</p>
+      </div>
+    </div>
+
+    <div class="ba-panel">
+      <div class="ba-header">
+        <span class="ba-tag after">After</span>
+        <span class="ba-header-text">Coordinated structure</span>
+      </div>
+      <div class="coord-map">
+        <div class="coord-outer">
+          <div class="coord-col">
+            <div class="coord-node">
+              <div class="coord-node-title">CPA</div>
+              <div class="coord-node-sub">Tax strategy</div>
+            </div>
+            <div class="coord-node">
+              <div class="coord-node-title">Attorney</div>
+              <div class="coord-node-sub">Estate plan</div>
+            </div>
+          </div>
+          <div class="coord-center">
+            <span class="coord-arrow">⟷</span>
+            <div class="coord-hub">
+              <span class="coord-hub-letters">PG</span>
+              <span class="coord-hub-sub">Center</span>
+            </div>
+            <span class="coord-arrow">⟷</span>
+          </div>
+          <div class="coord-col">
+            <div class="coord-node">
+              <div class="coord-node-title">Investments</div>
+              <div class="coord-node-sub">Direct mgmt.</div>
+            </div>
+            <div class="coord-node">
+              <div class="coord-node-title">Other advisors</div>
+              <div class="coord-node-sub">As needed</div>
+            </div>
+          </div>
+        </div>
+        <div class="coord-family">
+          <div class="coord-family-text">Your family, one aligned picture</div>
+        </div>
+        <p class="coord-caption">All decisions stay connected. Nothing slips between the conversations.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT YOU GAIN / WHAT YOU KEEP -->
+<div class="section d2">
+  <p class="section-label">What changes and what stays the same</p>
+  <div class="gainlose">
+    <div class="gainlose-header">When ProffittGoodson is involved</div>
+    <div class="gl-row">
+      <div class="gl-icon keep">🔒</div>
+      <div class="gl-text">
+        <p class="gl-title">Your CPA stays</p>
+        <p class="gl-sub">The relationship continues. Their work becomes easier to implement across the full picture.</p>
+      </div>
+    </div>
+    <div class="gl-row">
+      <div class="gl-icon keep">🔒</div>
+      <div class="gl-text">
+        <p class="gl-title">Your attorney stays</p>
+        <p class="gl-sub">Estate planning continues with someone now making sure it connects to the investment and tax strategy.</p>
+      </div>
+    </div>
+    <div class="gl-row">
+      <div class="gl-icon gain">✦</div>
+      <div class="gl-text">
+        <p class="gl-title">You gain a full picture</p>
+        <p class="gl-sub">One team responsible for seeing everything together and catching what falls between the conversations.</p>
+      </div>
+    </div>
+    <div class="gl-row">
+      <div class="gl-icon gain">✦</div>
+      <div class="gl-text">
+        <p class="gl-title">You gain visibility</p>
+        <p class="gl-sub">Real-time awareness of how investment decisions, tax strategy, and estate structure are working together.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pull">
+  <p>"We make your advisors' work easier to implement, not harder."</p>
+</div>
+
+<div class="cta-section">
+  <a href="#" class="cta-primary">Schedule a Conversation</a>
+  <a href="#" class="cta-secondary">Download the COI Referral Guide</a>
+  <p class="cta-note">Your existing team stays in place.<br>We make sure it works as one.</p>
+</div>
+
+<div class="page-footer">
+  <div class="footer-badge">PG</div>
+  <span class="footer-name">ProffittGoodson · Confidential</span>
+</div>
+</body>
+</html>
