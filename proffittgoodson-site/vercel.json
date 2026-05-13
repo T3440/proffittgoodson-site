@@ -8,5 +8,6 @@
     { "src": "/video-2", "dest": "/video-2.html" },
     { "src": "/video-3", "dest": "/video-3.html" },
     { "src": "/guide", "dest": "/ProffittGoodson_COI_Referral_Guide.pdf" }
+    { "src": "/brand-film", "dest": "/brand-film.html" }
   ]
 }
