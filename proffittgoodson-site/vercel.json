@@ -1,13 +1,12 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "routes": [
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/coi", "dest": "/index.html" },
-    { "src": "/video-1", "dest": "/video-1.html" },
-    { "src": "/video-2", "dest": "/video-2.html" },
-    { "src": "/video-3", "dest": "/video-3.html" },
-    { "src": "/guide", "dest": "/ProffittGoodson_COI_Referral_Guide.pdf" }
-    { "src": "/brand-film", "dest": "/brand-film.html" }
+  "rewrites": [
+    { "source": "/coi", "destination": "/index.html" },
+    { "source": "/video-1", "destination": "/video-1.html" },
+    { "source": "/video-2", "destination": "/video-2.html" },
+    { "source": "/video-3", "destination": "/video-3.html" },
+    { "source": "/guide", "destination": "/ProffittGoodson_COI_Referral_Guide.pdf" },
+    { "source": "/brand-film", "destination": "/brand-film.html" }
   ]
 }
